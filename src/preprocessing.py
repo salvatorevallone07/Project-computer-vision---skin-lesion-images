@@ -2,14 +2,8 @@ import cv2 as cv
 
 # Processing before Segmentation
 
-def preprocess_denoise (image_rgb, method="median"):
-    if method == "median":
-        image = cv.medianBlur(image_rgb, 5)
-    elif method == "gaussian":
-        image = cv.GaussianBlur(image_rgb, (5, 5), 0)
-    else:
-        raise ValueError("Unknown method")
-
+def preprocess_denoise (image_rgb):
+    image = cv.medianBlur(image_rgb, 5)
     return image
 
 # Processing post segmentation

@@ -2,7 +2,6 @@ import cv2 as cv
 import numpy as np
 
 def segment_lesion (image_rgb):
-    # HSV conversion for separeate color and intensity
     image_hsv = cv.cvtColor(image_rgb, cv.COLOR_RGB2HSV)
     saturation = image_hsv[:, :, 1]
     # Use Otsu for the large dataset

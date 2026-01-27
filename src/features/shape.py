@@ -1,9 +1,7 @@
 import cv2 as cv
 import numpy as np
 
-# Utilizzo solo la maschera => indipendente da colore o illuminazione
-
-
+# Using only the mask for indipendency by color or intensity
 def extract_shape_feature (mask):
     features = {}
     binary_mask = (mask > 0).astype(np.uint8)

@@ -12,7 +12,7 @@ def build_features_dataset (dataset):
 
     for i in range (n_samples):
         image,label = dataset[i]
-        image = preprocess_denoise(image, method="median")
+        image = preprocess_denoise(image)
         mask = segment_lesion(image)
         image = preprocess_postsegment(image, mask)
 

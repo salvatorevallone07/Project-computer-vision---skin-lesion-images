@@ -1,5 +1,4 @@
 import os
-import cv2 as cv
 import torch
 from torch.utils.data import TensorDataset, DataLoader
 import numpy as np
@@ -50,7 +49,7 @@ def main():
     print("Image shape:", image.shape)
 
     # Preprocessing and segmentation check
-    image = preprocess_denoise(image, method="median")
+    image = preprocess_denoise(image)
     mask = segment_lesion(image)
     image_processed = preprocess_postsegment(image, mask)
 
@@ -65,6 +64,7 @@ def main():
     print("Texture features:", texture_features)
 
 
+    # Plot for the test of segmentation and preprocessing
     # cv.imshow("Original Image", cv.cvtColor(image, cv.COLOR_RGB2BGR))
     # cv.imshow("Lesion Mask", mask)
     # cv.imshow(
@@ -75,7 +75,7 @@ def main():
     # cv.waitKey(0)
     # cv.destroyAllWindows()
 
-    # Dataset constract for the ML model
+    # Dataset construct for the ML model
     X, Y, features_names = build_features_dataset(dataset)
     print ("Features matrix:", X.shape)
     print ("Labels:", Y.shape)
@@ -88,7 +88,6 @@ def main():
     # Normalize train and test set
     X_train, X_test, mean, std = normalize_dataset(X_train, X_test)
 
-    # Define and training model
     Xtr = torch.tensor(X_train, dtype=torch.float32)
     Ytr = torch.tensor(Y_train, dtype=torch.float32)
     Xte = torch.tensor(X_test, dtype=torch.float32)
@@ -106,6 +105,7 @@ def main():
     criterion = torch.nn.BCEWithLogitsLoss(pos_weight=pos_weight)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
+    # train the model
     epochs = 100
     for epoch in range(epochs):
         model.train()
@@ -122,6 +122,7 @@ def main():
         if (epoch + 1) % 10 == 0:
             print(f"Epoch {epoch + 1}/{epochs} - Loss: {epoch_loss:.4f}")
 
+    # evaluate the model
     model.eval()
     with torch.no_grad():
         logits = model(Xte)
